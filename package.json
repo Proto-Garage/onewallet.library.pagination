@@ -2,7 +2,7 @@
   "name": "onewallet.library.pagination",
   "version": "0.1.0",
   "description": "Pagination library for mongoose",
-  "main": "index.js",
+  "main": "build/index.js",
   "scripts": {
     "lint": "eslint src/**/*.ts",
     "clean": "rimraf /build",
