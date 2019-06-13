@@ -1,5 +1,5 @@
 import { Model, Document } from 'mongoose';
-export default function retrievePage<TNode = object>(model: Model<Document, {}>, params: {
+export default function retrievePage<TNode = object, TDocument extends Document = Document>(model: Model<TDocument, {}>, params: {
     first?: number;
     after?: string;
     filter?: {
@@ -8,7 +8,7 @@ export default function retrievePage<TNode = object>(model: Model<Document, {}>,
 }, options?: {
     cursorKey?: string;
     sortDirection?: 1 | -1;
-    transform?: <TDocument = Document>(document: TDocument) => TNode | Promise<TNode>;
+    transform?: (document: TDocument) => TNode | Promise<TNode>;
 }): Promise<{
     totalCount: number;
     edges: {

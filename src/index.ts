@@ -1,8 +1,11 @@
 import { Model, Document } from 'mongoose';
 import R from 'ramda';
 
-export default async function retrievePage<TNode = object>(
-  model: Model<Document, {}>,
+export default async function retrievePage<
+  TNode = object,
+  TDocument extends Document = Document
+>(
+  model: Model<TDocument, {}>,
   params: {
     first?: number;
     after?: string;
@@ -13,9 +16,7 @@ export default async function retrievePage<TNode = object>(
   options: {
     cursorKey?: string;
     sortDirection?: 1 | -1;
-    transform?: <TDocument = Document>(
-      document: TDocument
-    ) => TNode | Promise<TNode>;
+    transform?: (document: TDocument) => TNode | Promise<TNode>;
   } = {}
 ): Promise<{
   totalCount: number;
@@ -74,7 +75,7 @@ export default async function retrievePage<TNode = object>(
     .sort({ [cursorKey]: sortDirection });
 
   const edges = await Promise.all(
-    R.map<Document, Promise<{ node: TNode; cursor: string }>>(async item => ({
+    R.map<TDocument, Promise<{ node: TNode; cursor: string }>>(async item => ({
       node: await transform(item),
       cursor: (R.prop(cursorKey)(item as any) as Buffer).toString('base64'),
     }))(documents)
