@@ -9,8 +9,9 @@ export default function retrievePage<TNode = object, TDocument extends Document 
     cursorKey?: string;
     sortDirection?: 1 | -1;
     transform?: (document: TDocument) => TNode | Promise<TNode>;
+    totalCount?: boolean;
 }): Promise<{
-    totalCount: number;
+    totalCount?: number;
     edges: {
         cursor: string;
         node: TNode;

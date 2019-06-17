@@ -10,7 +10,10 @@ async function retrievePage(model, params, options = {}) {
     const cursorKey = options.cursorKey || 'cursor';
     const limit = Math.min(params.first || 1000, 1000);
     const filter = Object.assign({}, (params.filter || {}));
-    const totalCount = await model.countDocuments(filter);
+    let totalCount;
+    if (!ramda_1.default.isNil(options.totalCount) && !options.totalCount) {
+        totalCount = await model.countDocuments(filter);
+    }
     const cursorCriteria = (field) => ({
         [sortDirection === 1 ? '$gt' : '$lt']: Buffer.from(field, 'base64'),
     });

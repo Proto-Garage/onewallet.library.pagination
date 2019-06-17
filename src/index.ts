@@ -17,9 +17,10 @@ export default async function retrievePage<
     cursorKey?: string;
     sortDirection?: 1 | -1;
     transform?: (document: TDocument) => TNode | Promise<TNode>;
+    totalCount?: boolean;
   } = {}
 ): Promise<{
-  totalCount: number;
+  totalCount?: number;
   edges: { cursor: string; node: TNode }[];
   pageInfo: {
     endCursor: string | null;
@@ -39,7 +40,10 @@ export default async function retrievePage<
     ...(params.filter || {}),
   };
 
-  const totalCount = await model.countDocuments(filter);
+  let totalCount: number | undefined;
+  if (!R.isNil(options.totalCount) && !options.totalCount) {
+    totalCount = await model.countDocuments(filter);
+  }
 
   const cursorCriteria = (
     field: string
