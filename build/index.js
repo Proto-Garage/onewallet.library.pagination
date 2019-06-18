@@ -11,7 +11,7 @@ async function retrievePage(model, params, options = {}) {
     const limit = Math.min(params.first || 1000, 1000);
     const filter = Object.assign({}, (params.filter || {}));
     let totalCount;
-    if (!ramda_1.default.isNil(options.totalCount) && !options.totalCount) {
+    if (options.totalCount || ramda_1.default.isNil(options.totalCount)) {
         totalCount = await model.countDocuments(filter);
     }
     const cursorCriteria = (field) => ({

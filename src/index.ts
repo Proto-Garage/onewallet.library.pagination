@@ -41,7 +41,7 @@ export default async function retrievePage<
   };
 
   let totalCount: number | undefined;
-  if (!R.isNil(options.totalCount) && !options.totalCount) {
+  if (options.totalCount || R.isNil(options.totalCount)) {
     totalCount = await model.countDocuments(filter);
   }
 
