@@ -1,10 +1,9 @@
 import { Model, Document } from 'mongoose';
+import { Dictionary } from 'ramda';
 export default function retrievePage<TNode = object, TDocument extends Document = Document>(model: Model<TDocument, {}>, params: {
-    first?: number;
-    after?: string;
-    filter?: {
-        [key: string]: any;
-    };
+    first?: number | null;
+    after?: string | null;
+    filter?: Dictionary<any>;
 }, options?: {
     cursorKey?: string;
     sortDirection?: 1 | -1;

@@ -1,5 +1,5 @@
 import { Model, Document } from 'mongoose';
-import R from 'ramda';
+import R, { Dictionary } from 'ramda';
 
 export default async function retrievePage<
   TNode = object,
@@ -7,11 +7,9 @@ export default async function retrievePage<
 >(
   model: Model<TDocument, {}>,
   params: {
-    first?: number;
-    after?: string;
-    filter?: {
-      [key: string]: any;
-    };
+    first?: number | null;
+    after?: string | null;
+    filter?: Dictionary<any>;
   },
   options: {
     cursorKey?: string;
