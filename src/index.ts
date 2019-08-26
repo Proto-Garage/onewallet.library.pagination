@@ -8,7 +8,7 @@ export default async function retrievePage<
   model: Model<TDocument, {}>,
   params: {
     first?: number | null;
-    after?: string | null;
+    after?: Buffer | null;
     filter?: Dictionary<any>;
   },
   options: {
@@ -19,9 +19,9 @@ export default async function retrievePage<
   } = {}
 ): Promise<{
   totalCount?: number;
-  edges: { cursor: string; node: TNode }[];
+  edges: { cursor: Buffer; node: TNode }[];
   pageInfo: {
-    endCursor: string | null;
+    endCursor: Buffer | null;
     hasNextPage: boolean;
   };
 }> {
@@ -44,16 +44,16 @@ export default async function retrievePage<
   }
 
   const cursorCriteria = (
-    field: string
+    field: Buffer
   ): {
     [key: string]: Buffer;
   } => ({
-    [sortDirection === 1 ? '$gt' : '$lt']: Buffer.from(field, 'base64'),
+    [sortDirection === 1 ? '$gt' : '$lt']: field,
   });
 
   const addCursorFilter = (
     initialFilter: { [key: string]: any },
-    after: string
+    after: Buffer
   ): { [key: string]: any } => {
     if (initialFilter.$and) {
       return [{ [cursorKey]: cursorCriteria(after) }, ...initialFilter.$and];
@@ -77,15 +77,15 @@ export default async function retrievePage<
     .sort({ [cursorKey]: sortDirection });
 
   const edges = await Promise.all(
-    R.map<TDocument, Promise<{ node: TNode; cursor: string }>>(async item => ({
+    R.map<TDocument, Promise<{ node: TNode; cursor: Buffer }>>(async item => ({
       node: await transform(item),
-      cursor: (R.prop(cursorKey)(item as any) as Buffer).toString('base64'),
+      cursor: R.prop(cursorKey)(item as any),
     }))(documents)
   );
 
   const endCursor =
     edges.length > 0
-      ? R.prop('cursor')(R.last(edges) as { cursor: string })
+      ? R.prop('cursor')(R.last(edges) as { cursor: Buffer })
       : null;
 
   let hasNextPage = false;
