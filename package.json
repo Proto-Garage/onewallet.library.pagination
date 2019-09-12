@@ -21,6 +21,7 @@
     "ramda": "^0.26.1"
   },
   "devDependencies": {
+    "@types/ramda": "^0.26.21",
     "@typescript-eslint/eslint-plugin": "~1.6.0",
     "@typescript-eslint/parser": "~1.6.0",
     "eslint": "^5.16.0",

@@ -76,10 +76,12 @@ export default async function retrievePage<
     .limit(limit)
     .sort({ [cursorKey]: sortDirection });
 
+  const getCursor = R.path<Buffer>(cursorKey.split('.'));
+
   const edges = await Promise.all(
     R.map<TDocument, Promise<{ node: TNode; cursor: Buffer }>>(async item => ({
       node: await transform(item),
-      cursor: R.prop(cursorKey)(item as any),
+      cursor: getCursor(item) as Buffer,
     }))(documents)
   );
 
