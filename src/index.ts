@@ -1,6 +1,15 @@
 import { Model, Document } from 'mongoose';
 import R, { Dictionary } from 'ramda';
 
+export const EmptyPage = {
+  edges: [],
+  totalCount: 0,
+  pageInfo: {
+    endCursor: null,
+    hasNextPage: false,
+  },
+};
+
 export default async function retrievePage<
   TNode = object,
   TDocument extends Document = Document
