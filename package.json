@@ -17,6 +17,7 @@
   "author": "High Output Ventures",
   "dependencies": {
     "@types/mongoose": "^5.5.6",
+    "highoutput-utilities": "0.0.10",
     "mongoose": "^5.5.15",
     "ramda": "^0.26.1"
   },

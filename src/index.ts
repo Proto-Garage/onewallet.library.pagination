@@ -1,5 +1,8 @@
 import { Model, Document } from 'mongoose';
 import R, { Dictionary } from 'ramda';
+import { Logger } from 'highoutput-utilities';
+
+const logger = new Logger(['pagination']);
 
 export const EmptyPage = {
   edges: [],
@@ -80,10 +83,13 @@ export default async function retrievePage<
     query = addCursorFilter(filter, params.after);
   }
 
+  const sort = { [cursorKey]: sortDirection };
+  logger.silly({ query, limit, sort });
+
   const documents = await model
     .find(query)
     .limit(limit)
-    .sort({ [cursorKey]: sortDirection });
+    .sort(sort);
 
   const getCursor = R.path<Buffer>(cursorKey.split('.'));
 
