@@ -1,6 +1,6 @@
 {
   "name": "onewallet.library.pagination",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "description": "Pagination library for mongoose",
   "main": "build/index.js",
   "scripts": {
