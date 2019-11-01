@@ -25,7 +25,7 @@ export default async function retrievePage<
   },
   options: {
     cursorKey?: string;
-    sortDirection?: 1 | -1;
+    sortDirection?: 'ASC' | 'DESC';
     transform?: (document: TDocument) => TNode | Promise<TNode>;
     totalCount?: boolean;
   } = {}
@@ -40,7 +40,8 @@ export default async function retrievePage<
   const transform =
     options.transform || ((document: Document) => document.toJSON());
 
-  const sortDirection = options.sortDirection || -1;
+  // eslint-disable-next-line no-nested-ternary
+  const sortDirection = options.sortDirection === 'ASC' ? 1 : -1;
 
   const cursorKey = options.cursorKey || 'cursor';
 
