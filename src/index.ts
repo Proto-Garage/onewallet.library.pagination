@@ -69,7 +69,9 @@ export default async function retrievePage<
     after: Buffer
   ): { [key: string]: any } => {
     if (initialFilter.$and) {
-      return [{ [cursorKey]: cursorCriteria(after) }, ...initialFilter.$and];
+      return {
+        $and: [{ [cursorKey]: cursorCriteria(after) }, ...initialFilter.$and],
+      };
     }
 
     return {
