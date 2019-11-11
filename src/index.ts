@@ -70,7 +70,7 @@ export default async function retrievePage<
   ): { [key: string]: any } => {
     if (initialFilter.$and) {
       return {
-        $and: [{ [cursorKey]: cursorCriteria(after) }, ...initialFilter.$and],
+        $and: [...initialFilter.$and, { [cursorKey]: cursorCriteria(after) }],
       };
     }
 
