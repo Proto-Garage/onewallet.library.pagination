@@ -1,5 +1,5 @@
-import { Model, Document } from 'mongoose';
-import R, { Dictionary } from 'ramda';
+import { Model, Document, FilterQuery } from 'mongoose';
+import R from 'ramda';
 import { Logger } from 'highoutput-utilities';
 
 const logger = new Logger(['pagination']);
@@ -21,7 +21,7 @@ export default async function retrievePage<
   params: {
     first?: number | null;
     after?: Buffer | null;
-    filter?: Dictionary<any>;
+    filter?: FilterQuery<TDocument>;
   },
   options: {
     cursorKey?: string;
@@ -65,9 +65,9 @@ export default async function retrievePage<
   });
 
   const addCursorFilter = (
-    initialFilter: { [key: string]: any },
+    initialFilter: FilterQuery<TDocument>,
     after: Buffer
-  ): { [key: string]: any } => {
+  ): FilterQuery<{}> => {
     if (initialFilter.$and) {
       return {
         $and: [...initialFilter.$and, { [cursorKey]: cursorCriteria(after) }],
