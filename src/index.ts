@@ -45,7 +45,7 @@ export default async function retrievePage<
 
   const cursorKey = options.cursorKey || 'cursor';
 
-  const limit = Math.min(params.first || 1000, 1000);
+  const limit = params.first || 1000;
 
   const filter = {
     ...(params.filter || {}),
