@@ -89,18 +89,17 @@ export default async function retrievePage<
   const sort = { [cursorKey]: sortDirection };
   logger.silly({ query, limit, sort });
 
-  const documents = await model
-    .find(query)
-    .limit(limit)
-    .sort(sort);
+  const documents = await model.find(query).limit(limit).sort(sort);
 
   const getCursor = R.path<Buffer>(cursorKey.split('.'));
 
   const edges = await Promise.all(
-    R.map<TDocument, Promise<{ node: TNode; cursor: Buffer }>>(async item => ({
-      node: await transform(item),
-      cursor: getCursor(item) as Buffer,
-    }))(documents)
+    R.map<TDocument, Promise<{ node: TNode; cursor: Buffer }>>(
+      async (item) => ({
+        node: await transform(item),
+        cursor: getCursor(item) as Buffer,
+      })
+    )(documents)
   );
 
   const endCursor =
